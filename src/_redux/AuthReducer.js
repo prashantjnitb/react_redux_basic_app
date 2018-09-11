@@ -22,7 +22,6 @@ export default (state = initialState, action) => {
       error: null
     }
   case SESSION_CHECK_SUCCESS:
-    
     return {
       current_user: action.user,
       loading: false,
@@ -35,8 +34,6 @@ export default (state = initialState, action) => {
       loading: false,
       error: action.error
     }
-
-
   case CLEAR_SESSION_BEGIN:
     return {
       current_user: null,

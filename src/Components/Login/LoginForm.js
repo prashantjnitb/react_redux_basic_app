@@ -4,6 +4,7 @@ import { Col, Button, FormGroup, Label, Input } from 'reactstrap';
 import './login.css'
 import { Redirect } from 'react-router-dom'
 import { createSession } from './_redux/SessionActions'
+import { CheckUserLoggedIn } from '../../_redux/AuthActions'
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +34,7 @@ class LoginForm extends React.Component {
     if (event) event.preventDefault()
     if(this.validateFormData()){
       this.props.dispatch(createSession(this.state.user))
+      this.props.dispatch(CheckUserLoggedIn())
     }
   }
 
@@ -46,8 +48,13 @@ class LoginForm extends React.Component {
     return true;
   }
 
+  componentDidMount() {
+    this.props.dispatch(CheckUserLoggedIn())
+  }
+
   render() {
     const { current_user, error, loading } = this.props
+    
     if(current_user) {
       return <Redirect to='/' />;
     }
@@ -97,7 +104,7 @@ class LoginForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
- current_user: state.session.current_user,
+ current_user: state.auth.current_user,
  error: state.session.error,
  loading: state.session.loading,
 })

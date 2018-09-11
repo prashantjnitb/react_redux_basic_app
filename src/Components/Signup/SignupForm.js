@@ -4,6 +4,7 @@ import { Col, Button, FormGroup, Label, Input } from 'reactstrap';
 import './signup.css'
 import { createUser } from './_redux/SignupActions'
 import { Redirect } from 'react-router-dom'
+import { CheckUserLoggedIn } from '../../_redux/AuthActions'
 class SignupForm extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +37,7 @@ class SignupForm extends React.Component {
     if (event) event.preventDefault()
     if(this.validateFormData()){
       this.props.dispatch(createUser(this.state.user))
+      this.props.dispatch(CheckUserLoggedIn())
     }
   }
 
@@ -52,11 +54,17 @@ class SignupForm extends React.Component {
     return true;
   }
 
+  componentDidMount() {
+    this.props.dispatch(CheckUserLoggedIn())
+  }
+
   render() {
     const { error, current_user } = this.props
+    
     if(current_user) {
       return <Redirect to='/' />;
     }
+
     return (
       <div className="col-md-12 signup_page_padding">
         <form onSubmit={this.handleSubmit}>
@@ -121,7 +129,7 @@ class SignupForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
- current_user: state.session.current_user,
+ current_user: state.auth.current_user,
  user: state.signup.user,
  error: state.signup.error,
  loading: state.signup.loading,

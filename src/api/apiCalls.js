@@ -16,7 +16,9 @@ export function createUser(params) {
   if(!exist) {
     users.push(params)
     users = JSON.stringify(users)
+    let user = JSON.stringify(params)
     localStorage.setItem("saved_users_data", users);
+    localStorage.setItem("current_user", user);
     return params;
   } else {
     return {error: "User with this email already exists"}
